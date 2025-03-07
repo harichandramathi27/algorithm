@@ -1,0 +1,45 @@
+import time
+import random
+import matplotlib.pyplot as plt
+
+
+def recursive_binary_search(arr, target, low, high):
+    if low > high:
+        return -1 
+    mid = (low + high) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] > target:
+        return recursive_binary_search(arr, target, low, mid - 1)
+    else:
+        return recursive_binary_search(arr, target, mid + 1, high)
+
+
+def measure_search_time(n, target):
+    
+    arr = sorted([random.randint(1, 1000000) for _ in range(n)])
+    
+   
+    start_time = time.time()
+    recursive_binary_search(arr, target, 0, n - 1)
+    end_time = time.time()
+    
+    
+    return end_time - start_time
+
+
+n_values = [100, 200, 500, 1000, 5000, 10000, 20000]
+time_taken = []
+
+
+for n in n_values:
+    target = random.randint(1, 1000000)  
+    time_taken.append(measure_search_time(n, target))
+
+
+plt.plot(n_values, time_taken, marker='o')
+plt.xlabel('Number of Elements (n)')
+plt.ylabel('Time Taken (seconds)')
+plt.title('Recursive Binary Search: Time vs Number of Elements')
+plt.grid(True)
+plt.show()
